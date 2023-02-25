@@ -1,0 +1,35 @@
+---
+version: "3"
+services:
+  db:
+    image: kasaragadda99599/db:v1
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=encrypt password
+  cache01:
+    image: memcached
+    ports:
+      - "11211:11211"
+  mq01:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+  app:
+    image: kasaragadda99599/tomcat-app:v1
+    ports:
+      - "8080:8080"
+    volumes:
+      - appdata:/usr/local/tomcat/webapps
+  web:
+    image: kasaragadda99599/nginx-web:v1
+    ports:
+      - "80:80"
+volumes:
+  dbdata: {}
+  appdata: {}
